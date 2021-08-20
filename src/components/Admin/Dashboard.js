@@ -1,5 +1,13 @@
+import Header from "../header/Header";
+import Sidebar from "./Sidebar";
+
 function Dashboard() {
-  return <div>Bienvenido Admin</div>;
+  return (
+    <div>
+      <Header />
+      <Sidebar />
+    </div>
+  );
 }
 
 export default Dashboard;
