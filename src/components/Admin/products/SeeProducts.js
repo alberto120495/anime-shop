@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { db } from "../../firebase/firebase-config";
+import { db } from "../../../firebase/firebase-config";
 import Product from "./Product";
 
 function SeeProducts() {
@@ -15,13 +15,15 @@ function SeeProducts() {
       );
   }, []);
   return (
-    <div>
+    <div className="flex flex-wrap  justify-around h-full m-3 space-x-3  ">
       {products.map((product) => (
         <Product
           key={product.id}
           producto={product.data.producto}
           descripcion={product.data.descripcion}
           cantidad={product.data.cantidad}
+          precio={product.data.precio}
+          categoria={product.data.categoria}
           imagen={product.data.imagen}
           timestamp={product.data.timestamp}
         />

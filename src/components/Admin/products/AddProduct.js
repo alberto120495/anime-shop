@@ -1,30 +1,33 @@
-import { useState } from "react";
-import useForm from "../../hooks/useForm";
+import { useEffect, useState } from "react";
+import useForm from "../../../hooks/useForm";
 import firebase from "firebase";
-import { db } from "../../firebase/firebase-config";
+import { db } from "../../../firebase/firebase-config";
 
 function AddProduct() {
   const initialForm = {
     producto: "",
     descripcion: "",
     cantidad: 0,
+    categoria: "",
+    precio: 0,
   };
-  const [formValues, handleInputChange, reset] = useForm(initialForm);
-  const { producto, descripcion, cantidad } = formValues;
 
+  const [categories, setCategories] = useState([]);
+  const [formValues, handleInputChange, reset] = useForm(initialForm);
+  const { producto, descripcion, cantidad, precio, categoria } = formValues;
   const [picture, setPicture] = useState(null);
 
   const handleSubmit = (e) => {
     e.preventDefault();
-
     db.collection("productos").add({
       producto: producto,
       descripcion: descripcion,
       cantidad: cantidad,
+      precio: precio,
+      categoria: categoria,
       imagen: picture,
       timestamp: firebase.firestore.FieldValue.serverTimestamp(),
     });
-
     reset(initialForm);
     setPicture(null);
   };
@@ -46,6 +49,16 @@ function AddProduct() {
       }
     );
   };
+
+  useEffect(() => {
+    db.collection("categorias").onSnapshot((snapshot) =>
+      setCategories(
+        snapshot.docs.map((doc) => ({ id: doc.id, data: doc.data() }))
+      )
+    );
+  }, []);
+
+  console.log(categoria);
 
   return (
     <div className=" w-1/2 ml-auto mr-auto mt-28  ">
@@ -85,6 +98,31 @@ function AddProduct() {
             value={cantidad}
             onChange={handleInputChange}
           />
+          <label htmlFor="">Precio del producto</label>
+          <input
+            type="number"
+            name="precio"
+            className="outline-none border-b border-gray-200 p-1"
+            placeholder="Precio..."
+            value={precio}
+            onChange={handleInputChange}
+          />
+
+          <label htmlFor="">Categoria</label>
+          <select
+            name="categoria"
+            className="outline-none border-b border-gray-200 p-1"
+            value={categoria}
+            onChange={handleInputChange}
+            required
+          >
+            <option value="">Selecciona categoria</option>
+            {categories.map((category) => (
+              <option key={category.id} value={category.data.categoryName}>
+                {category.data.categoryName}
+              </option>
+            ))}
+          </select>
 
           <label htmlFor="" className="text-sm uppercase">
             Descripcion del producto
