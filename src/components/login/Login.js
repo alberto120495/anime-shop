@@ -3,11 +3,14 @@ import { UserIcon } from "@heroicons/react/outline";
 import { UserCircleIcon } from "@heroicons/react/solid";
 import { LockClosedIcon } from "@heroicons/react/outline";
 import { auth } from "../../firebase/firebase-config";
+import { useContext } from "react";
 import Swal from "sweetalert2";
 
 import useForm from "../../hooks/useForm";
+import { UserContext } from "../../UserContext";
 
 function Login() {
+  const { setUser } = useContext(UserContext);
   const history = useHistory();
   const [formValues, handleInputChange] = useForm({
     email: "",
@@ -20,6 +23,7 @@ function Login() {
     auth
       .signInWithEmailAndPassword(email, password)
       .then((auth) => {
+        setUser({ email: auth.user.email });
         history.push("/admin");
       })
       .catch((error) =>

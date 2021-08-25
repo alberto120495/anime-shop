@@ -11,10 +11,10 @@ function Product({
     return string?.length > n ? string.substr(0, n - 1) + "..." : string;
   }
   return (
-    <div className="bg-white shadow-lg rounded-md   mb-5 w-52 ">
-      <div className="p-4">
-        <div className="flex justify-center">
-          <img src={imagen} alt="" className="w-36 rounded-md" />
+    <div className="bg-white shadow-lg rounded-md  mb-5 w-52 cursor-pointer ">
+      <div className="p-4  ">
+        <div className="flex justify-center ">
+          <img src={imagen} alt="" className="w-36 rounded-md " />
         </div>
         <div className="text-center h-32">
           <h2 className="uppercase font-semibold tracking-widest ">
